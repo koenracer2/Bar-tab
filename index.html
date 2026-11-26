@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bar tab</title>
+<style>
+:root{--bg:#eef2ef;--card:#ffffff;--ink:#14302a;--mute:#66786f;--line:#d5ddd8;--acc:#0f5c4d;--accink:#ffffff;--warn:#b0402e;--shadow:0 1px 2px rgba(20,48,42,.08),0 6px 18px rgba(20,48,42,.06);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1b18;--card:#182723;--ink:#e8efe9;--mute:#8fa59b;--line:#2a3d37;--acc:#52c2a5;--accink:#0b1a16;--warn:#ee8f7c;--shadow:none}}
+:root[data-theme="dark"]{--bg:#0f1b18;--card:#182723;--ink:#e8efe9;--mute:#8fa59b;--line:#2a3d37;--acc:#52c2a5;--accink:#0b1a16;--warn:#ee8f7c;--shadow:none}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 "Avenir Next",Avenir,system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:560px;margin:0 auto;padding:18px 16px 60px}
+h1{font-size:2rem;font-weight:800;letter-spacing:-.03em;margin:4px 0 16px}
+h2{font-size:1.05rem;margin:0}
+button,input,select{font:inherit;color:var(--ink)}
+button{cursor:pointer;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:10px 14px}
+input,select{padding:13px 14px;border:1px solid var(--line);border-radius:12px;background:var(--card);min-width:0}
+button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.primary{background:var(--acc);color:var(--accink);border-color:var(--acc);font-weight:700}
+.addname{display:flex;gap:8px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding:6px 0 12px;z-index:2}
+.addname input{flex:1;font-size:1.05rem}
+.letter{font-weight:800;color:var(--acc);margin:18px 4px 6px;font-size:.95rem}
+.who{display:flex;width:100%;justify-content:space-between;align-items:center;text-align:left;padding:15px 16px;margin-bottom:8px;box-shadow:var(--shadow);min-height:56px}
+.who b{font-size:1.1rem}
+.who span{color:var(--mute);font-size:.9rem;white-space:nowrap}
+.empty{color:var(--mute);padding:28px 4px}
+.back{display:inline-flex;align-items:center;gap:8px;min-height:52px;padding:12px 22px 12px 16px;font-size:1.15rem;font-weight:700;color:var(--acc);border:1.5px solid var(--acc);margin-bottom:12px;box-shadow:var(--shadow)}
+.top{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;margin-bottom:12px}
+.top h1{margin:0}
+.sum{color:var(--mute);font-weight:600;padding-bottom:6px}
+.had{background:var(--card);border-radius:16px;padding:14px 16px;box-shadow:var(--shadow);border:1px solid var(--line);margin-bottom:16px}
+.had h2{color:var(--mute);font-weight:600;font-size:.9rem;margin-bottom:6px}
+.line{display:flex;align-items:center;gap:8px;padding:4px 0}
+.line i{width:6px;align-self:stretch;border-radius:3px;background:var(--g)}
+.line .n{flex:1;font-weight:600}
+.line button{min-width:46px;min-height:46px;padding:0;font-size:1.3rem;font-weight:700}
+.line .up{background:var(--acc);color:var(--accink);border-color:var(--acc)}
+.search{width:100%;font-size:1.05rem;margin-bottom:16px}
+.grp{margin-bottom:18px}
+.grp h2{display:flex;align-items:center;gap:8px;margin:0 0 8px 2px}
+.grp h2:before{content:"";width:10px;height:10px;border-radius:50%;background:var(--g)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.drink{position:relative;text-align:left;min-height:58px;padding:10px 12px;font-weight:700;border:1.5px solid color-mix(in srgb,var(--g) 55%,var(--card));background:color-mix(in srgb,var(--g) 12%,var(--card));transition:transform .08s}
+.drink:active{transform:scale(.96);background:color-mix(in srgb,var(--g) 30%,var(--card))}
+.drink .c{position:absolute;top:-7px;right:-5px;min-width:24px;height:24px;border-radius:12px;background:var(--g);color:#fff;font-weight:800;font-size:.8rem;display:grid;place-items:center;padding:0 6px}
+.drink small{display:block;color:var(--mute);font-weight:500}
+.custom{width:100%;min-height:50px;margin-bottom:16px;border:1.5px dashed var(--acc);background:transparent;color:var(--acc);font-weight:700}
+.cform{display:flex;gap:8px;margin-bottom:16px}
+.cform input{flex:1}
+.del{margin-top:8px;width:100%;color:var(--warn);border-color:var(--warn);background:transparent}
+.del.armed{background:var(--warn);color:var(--accink)}
+details{margin-top:30px;border-top:1px solid var(--line);padding-top:14px}
+summary{cursor:pointer;font-weight:700}
+.ed h2{margin:16px 0 4px;font-size:.95rem;color:var(--mute)}
+.er{display:flex;gap:8px;align-items:center;padding:3px 0}
+.er span{flex:1}
+.newd{display:grid;grid-template-columns:1fr;gap:8px;margin-top:16px}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<script>
+var KEY="bartab-v3";
+var GROUPS=[
+{id:"warm",name:"Warme dranken",c:"#8a5a3f",l:["Filter koffie","Koffie speciaal","Espresso","Dubbele espresso","Thee","Hot chocolate"]},
+{id:"fris",name:"Frisdrank",c:"#e2792f",l:["Coca cola","Tonic","Appelsap","Water","Spa rood","Spa blauw","Coca cola zero","Rivella","Ice tea green","Ice tea","Fanta","Seven-up","Chocomel","Jus d’orange","Cassis","Bitter lemon"]},
+{id:"bier",name:"Bier",c:"#c9971a",l:["Tap bier groot","Fles Bavaria bier","Radler 2%","Speciaal bier","Fles Bavaria witbier","Rodenbach bier","Alcoholvrij en radler 0%","Nillis en epos 0%"]},
+{id:"wijn",name:"Wijnen",c:"#a3355a",l:["Witte wijn","Witte wijn (zoet)","Rode wijn","Rosé","Cherry","Port, rood"]},
+{id:"sterk",name:"Sterke drank",c:"#4e63b0",l:["Bacardi, whiskey","Amaretto","Mixdranken","Jägermeister","Jenever","Schrobbelèr","Vieux"]},
+{id:"snoep",name:"Snoep en chips",c:"#2f8f6b",l:["Koek","Chips","Snoep"]}];
+function slug(t){return t.toLowerCase().replace(/[^a-z0-9]/g,"")}
+var state={drinks:[],people:[]};
+GROUPS.forEach(function(g){g.l.forEach(function(n){state.drinks.push({id:g.id+"-"+slug(n),g:g.id,name:n})})});
+try{
+  var s=localStorage.getItem(KEY);
+  if(s){state=JSON.parse(s)}
+  else{
+    var o=localStorage.getItem("bartab-v2");
+    if(o){
+      var old=JSON.parse(o),names={};
+      old.drinks.forEach(function(d){names[d.id]=slug(d.name)});
+      old.people.forEach(function(p){
+        var items={};
+        for(var k in p.items){var c=p.items[k],m=state.drinks.filter(function(d){return slug(d.name)===names[k]})[0];if(m&&c>0)items[m.id]=(items[m.id]||0)+c}
+        state.people.push({id:p.id,name:p.name,items:items});
+      });
+    }
+  }
+}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
+function esc(t){return String(t).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function norm(t){return String(t).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")}
+function uid(){return "x"+Date.now().toString(36)+Math.random().toString(36).slice(2,5)}
+function dr(id){return state.drinks.filter(function(d){return d.id===id})[0]}
+function gr(id){return GROUPS.filter(function(g){return g.id===id})[0]||GROUPS[0]}
+function count(p){var n=0;for(var id in p.items){if(dr(id)||(p.cust&&p.cust[id]))n+=Math.max(0,p.items[id])}return n}
+function cur(){var m=/^#tab-(.+)$/.exec(location.hash);if(!m)return null;return state.people.filter(function(p){return p.id===m[1]})[0]||null}
+var armed=null,q="",nf="",cu=false;
+
+function listHtml(){
+  var f=norm(nf.trim());
+  var sorted=state.people.filter(function(p){return !f||norm(p.name).indexOf(f)>-1}).sort(function(a,b){return a.name.localeCompare(b.name,"nl",{sensitivity:"base"})});
+  if(!sorted.length)return '<p class="empty">'+(state.people.length?'Geen naam gevonden. Tik op Toevoegen om "'+esc(nf.trim())+'" aan te maken.':'Nog niemand. Typ hierboven een naam.')+'</p>';
+  var h="",last="";
+  sorted.forEach(function(p){
+    var L=p.name.charAt(0).toUpperCase(),n=count(p);
+    if(L!==last){h+='<div class="letter">'+esc(L)+'</div>';last=L}
+    h+='<button class="who" data-act="open" data-p="'+p.id+'"><b>'+esc(p.name)+'</b><span>'+(n?n+(n===1?' drankje':' drankjes'):'nog niets')+'</span></button>';
+  });
+  return h;
+}
+function home(){
+  var h='<h1>Bar tab</h1><form class="addname" id="fp"><input id="name" placeholder="Naam zoeken of toevoegen" autocomplete="off" aria-label="Naam zoeken of toevoegen" value="'+esc(nf)+'"><button class="primary">Toevoegen</button></form><div id="list">'+listHtml()+'</div>';
+  h+='<details><summary>Drankenlijst aanpassen</summary><div class="ed">';
+  GROUPS.forEach(function(g){
+    h+='<h2>'+esc(g.name)+'</h2>';
+    state.drinks.filter(function(d){return d.g===g.id}).forEach(function(d){
+      h+='<div class="er"><span>'+esc(d.name)+'</span><button data-act="rm" data-d="'+d.id+'" aria-label="Verwijder '+esc(d.name)+'">✕</button></div>';
+    });
+  });
+  h+='<form class="newd" id="fd"><select id="dg" aria-label="Groep">'+GROUPS.map(function(g){return'<option value="'+g.id+'">'+esc(g.name)+'</option>'}).join("")+'</select><input id="dn" placeholder="Nieuwe drank" aria-label="Nieuwe drank"><button class="primary">Drank toevoegen</button></form></div></details>';
+  return h;
+}
+
+function btn(p,d,showGroup){
+  var c=p.items[d.id]||0;
+  return '<button class="drink" style="--g:'+gr(d.g).c+'" data-act="plus" data-d="'+d.id+'">'+esc(d.name)+(showGroup?'<small>'+esc(gr(d.g).name)+'</small>':'')+(c?'<span class="c">'+c+'</span>':'')+'</button>';
+}
+function drinksHtml(p){
+  var f=norm(q.trim());
+  if(f){
+    var res=[];
+    state.drinks.forEach(function(d,i){
+      var n=norm(d.name),sc=-1;
+      if(n.indexOf(f)===0)sc=0;
+      else if(n.split(/[^a-z0-9]+/).some(function(w){return w.indexOf(f)===0}))sc=1;
+      else if(n.indexOf(f)>-1)sc=2;
+      if(sc>-1)res.push({d:d,sc:sc,i:i});
+    });
+    res.sort(function(a,b){return a.sc-b.sc||a.i-b.i});
+    if(!res.length)return '<p class="empty" style="padding:8px 2px">Niets gevonden voor "'+esc(q.trim())+'".</p>';
+    return '<div class="grid">'+res.map(function(r){return btn(p,r.d,true)}).join("")+'</div>';
+  }
+  return GROUPS.map(function(g){
+    var ds=state.drinks.filter(function(d){return d.g===g.id});if(!ds.length)return"";
+    return '<section class="grp" style="--g:'+g.c+'"><h2>'+esc(g.name)+'</h2><div class="grid">'+ds.map(function(d){return btn(p,d,false)}).join("")+'</div></section>';
+  }).join("");
+}
+function detail(p){
+  var n=count(p),rows="";
+  state.drinks.forEach(function(d){var c=p.items[d.id]||0;if(c>0)rows+='<div class="line" style="--g:'+gr(d.g).c+'"><i></i><span class="n">'+c+'× '+esc(d.name)+'</span><button data-act="minus" data-d="'+d.id+'" aria-label="Eén '+esc(d.name)+' minder">−</button><button class="up" data-act="plus" data-d="'+d.id+'" aria-label="Nog een '+esc(d.name)+'">+</button></div>'});
+  for(var cid in (p.cust||{})){var cc=p.items[cid]||0;if(cc>0)rows+='<div class="line" style="--g:#7a8a84"><i></i><span class="n">'+cc+'× '+esc(p.cust[cid])+'</span><button data-act="minus" data-d="'+cid+'" aria-label="Eén minder">−</button><button class="up" data-act="plus" data-d="'+cid+'" aria-label="Nog een">+</button></div>'}
+  var h='<button class="back" data-act="back"><span aria-hidden="true">‹</span> Alle namen</button><div class="top"><h1>'+esc(p.name)+'</h1><span class="sum">'+n+(n===1?' drankje':' drankjes')+'</span></div>';
+  h+='<div class="had"><h2>Gehad</h2>'+(rows||'<p class="empty" style="padding:8px 0;margin:0">Nog niets. Tik hieronder op een drankje.</p>')+'</div>';
+  h+='<input class="search" id="q" type="search" placeholder="Zoek een drankje…" autocomplete="off" aria-label="Zoek een drankje" value="'+esc(q)+'">'+customHtml()+'<div id="res">'+drinksHtml(p)+'</div>';
+  h+='<button class="del'+(armed===p.id?' armed':'')+'" data-act="del">'+(armed===p.id?'Zeker weten? Tik nogmaals':'Afrekenen / tab wissen')+'</button>';
+  return h;
+}
+
+function customHtml(){return cu?'<form class="cform" id="fc"><input id="cn" placeholder="Wat heeft die persoon gehad?" autocomplete="off" aria-label="Eigen drankje" value="'+esc(q.trim())+'"><button class="primary">Toevoegen</button></form>':'<button class="custom" data-act="custom">+ Iets anders toevoegen</button>'}
+function render(){var p=cur();document.getElementById("app").innerHTML=p?detail(p):home();document.title=p?p.name+" · Bar tab":"Bar tab"}
+window.addEventListener("hashchange",function(){armed=null;q="";nf="";cu=false;render();window.scrollTo(0,0)});
+
+document.addEventListener("input",function(e){
+  var t=e.target;
+  if(t.id==="q"){q=t.value;var p=cur();if(p)document.getElementById("res").innerHTML=drinksHtml(p)}
+  if(t.id==="name"){nf=t.value;document.getElementById("list").innerHTML=listHtml()}
+});
+document.addEventListener("click",function(e){
+  var b=e.target.closest("button[data-act]");if(!b)return;
+  var a=b.dataset.act,p=cur();
+  if(a==="open"){location.hash="tab-"+b.dataset.p;return}
+  if(a==="back"){location.hash="home";return}
+  if(a==="custom"){cu=true;render();var ci=document.getElementById("cn");if(ci)ci.focus();return}
+  if(a==="rm"){state.drinks=state.drinks.filter(function(d){return d.id!==b.dataset.d})}
+  if(p&&a==="plus"){p.items[b.dataset.d]=(p.items[b.dataset.d]||0)+1;q="";try{navigator.vibrate(15)}catch(x){}}
+  if(p&&a==="minus"){p.items[b.dataset.d]=Math.max(0,(p.items[b.dataset.d]||0)-1)}
+  if(p&&a==="del"){
+    if(armed!==p.id){armed=p.id;setTimeout(function(){if(armed===p.id){armed=null;render()}},3500);render();return}
+    state.people=state.people.filter(function(x){return x!==p});armed=null;save();location.hash="home";return;
+  }
+  save();render();
+});
+document.addEventListener("submit",function(e){
+  e.preventDefault();var f=e.target;
+  if(f.id==="fp"){var n=document.getElementById("name").value.trim();if(!n)return;var p={id:uid(),name:n,items:{}};state.people.push(p);save();location.hash="tab-"+p.id}
+  if(f.id==="fc"){var p2=cur(),t2=document.getElementById("cn").value.trim();if(!p2||!t2)return;p2.cust=p2.cust||{};var cid2="c-"+(slug(t2)||uid());p2.cust[cid2]=t2;p2.items[cid2]=(p2.items[cid2]||0)+1;cu=false;q="";save();render();return}
+  if(f.id==="fd"){var nm=document.getElementById("dn").value.trim();if(!nm)return;state.drinks.push({id:uid(),g:document.getElementById("dg").value,name:nm});save();render()}
+});
+if(!location.hash)history.replaceState(null,"","#home");
+render();
+</script>
+</body>
+</html>
